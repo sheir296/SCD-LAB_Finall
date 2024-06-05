@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    stages {
+        stage('20i-0958 Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('20i-0958 Build Frontend') {
+            steps {
+                sh 'cd client && docker build -t shersher/frontend:20i-0958 -f Dockerfile.20i-0958 .'
+            }
+        }
+        stage('20i-0958 Build Backend') {
+            steps {
+                sh 'cd auth && docker build -t shersher/backend:20i-0958 -f Dockerfile.20i-0958 .'
+            }
+        }
+        stage('20i-0958 Push Frontend') {
+            steps {
+                sh 'docker push shersher/frontend:20i-0958'
+            }
+        }
+        stage('20i-0958 Push Backend') {
+            steps {
+                sh 'docker push shersher/backend:20i-0958'
+            }
+        }
+    }
+}

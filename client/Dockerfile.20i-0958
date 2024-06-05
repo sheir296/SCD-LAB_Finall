@@ -1,0 +1,17 @@
+# client/Dockerfile.20i-0958
+
+FROM node:14-alpine
+
+WORKDIR /20i-0958_frontend
+
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm install
+
+COPY . ./
+
+RUN npm run build
+
+EXPOSE 0958
+
+CMD ["npm", "start"]

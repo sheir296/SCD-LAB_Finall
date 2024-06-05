@@ -1,0 +1,51 @@
+# database-deployment-20i-0958.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment-20i-0958
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-20i-0958
+  template:
+    metadata:
+      labels:
+        app: mongo-20i-0958
+    spec:
+      containers:
+      - name: mongo
+        image: mongo
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongo-storage
+          mountPath: /data/db
+      volumes:
+      - name: mongo-storage
+        persistentVolumeClaim:
+          claimName: mongo-pvc-20i-0958
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc-20i-0958
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service-20i-0958
+spec:
+  selector:
+    app: mongo-20i-0958
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

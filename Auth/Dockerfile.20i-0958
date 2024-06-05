@@ -1,0 +1,15 @@
+# auth/Dockerfile.20i-0958
+
+FROM node:14
+
+WORKDIR /20i-0958_backend
+
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm install
+
+COPY . ./
+
+EXPOSE 0958
+
+CMD ["npm", "start"]
